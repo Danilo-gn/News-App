@@ -5,15 +5,17 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { useRouter } from 'expo-router';
 import { NewsCard } from '@/components/NewsCard';
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { useNewsStore } from '@/store/newsStore';
 import { SearchBar } from '@/components/SearchBar';
+import { CategoryFilter } from '@/components/CategoryFilter';
 
 export default function HomeScreen() {
   const router = useRouter();
   const { newsList, setNewsList, loading, setLoading, search, setSearch, loadFavorites } = useNewsStore();
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [category, setCategory] = useState('');
 
   useEffect(() => {
     loadFavorites();
@@ -21,9 +23,14 @@ export default function HomeScreen() {
 
   const fetchNews = async (reset = false) => {
     setLoading(true);
-    const url = search
-      ? `https://newsapi.org/v2/everything?q=${search}&apiKey=c263e63109d243a5b55384ff52e4e3c7`
-      : `https://newsapi.org/v2/top-headlines?country=us&apiKey=c263e63109d243a5b55384ff52e4e3c7`;
+    let url = '';
+    if (search) {
+      url = `https://newsapi.org/v2/everything?q=${search}&apiKey=c263e63109d243a5b55384ff52e4e3c7`;
+      if (category) url += `&category=${category}`;
+    } else {
+      url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=c263e63109d243a5b55384ff52e4e3c7`;
+      if (category) url += `&category=${category}`;
+    }
     try {
       const res = await fetch(url);
       const data = await res.json();
@@ -56,7 +63,7 @@ export default function HomeScreen() {
   useEffect(() => {
     setPage(1);
     fetchNews(true);
-  }, [search]);
+  }, [search, category]);
 
   const loadMore = () => {
     if (!loading && hasMore) {
@@ -117,6 +124,10 @@ export default function HomeScreen() {
             value={search}
             onChange={setSearch}
             onSubmit={() => setSearch(search)}
+          />
+          <CategoryFilter
+            selected={category}
+            onSelect={cat => setCategory(cat)}
           />
         </View>
       }
