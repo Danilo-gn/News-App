@@ -30,7 +30,7 @@ export default function HomeScreen() {
       const filtered = data.articles
         .filter((item: any) => item.title && item.description && item.urlToImage)
         .map((item: any, idx: number) => ({
-          id: `${page}-${idx}`,
+          id: `${item.url}-page${reset ? 1 : page}-idx${idx}`,
           title: item.title,
           description: item.description,
           image: item.urlToImage ? { uri: item.urlToImage } : { uri: 'https://reactnative.dev/img/tiny_logo.png' },
@@ -137,13 +137,15 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
   },
   image: {
-    width: '100%',
-    height: 100,
+    width: Platform.OS === 'web' ? '25%' : '100%',
+    height: Platform.OS === 'web' ? 120 : 100,
     marginBottom: 8,
+    alignSelf: 'center',
+    justifyContent: 'flex-start',
   },
   headerContainer: {
-    paddingBottom: 16,
-    paddingTop: 8,
+    paddingBottom: Platform.OS === 'web' ? 16 : 16,
+    paddingTop: Platform.OS === 'web' ? 0 : 8,
     backgroundColor: '#000000ff',
   }
 });

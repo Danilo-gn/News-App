@@ -1,6 +1,6 @@
 import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
 import { useEffect } from 'react';
-import { View, Text, StyleSheet, Button, ScrollView, Image, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, StyleSheet, Button, ScrollView, Image, TouchableOpacity, Linking, Platform } from 'react-native';
 
 export default function NewsDetailScreen() {
   const { title, image, content, url } = useLocalSearchParams();
@@ -18,13 +18,17 @@ export default function NewsDetailScreen() {
           <Text style={styles.linkText}>Acessar matéria original</Text>
         </TouchableOpacity>
       ) : null}
-      <Button title="Fechar" onPress={() => router.back()} />
+      <TouchableOpacity style={styles.closeButton}>
+        <Button color={'fff'} title="Fechar" onPress={() => router.back()} />
+      </TouchableOpacity>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    width: Platform.OS === 'web' ? '50%' : '100%',
+    alignSelf: 'center',
     padding: 20,
     paddingTop: 45,
     color: '#fff',
@@ -33,7 +37,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 280,
+    height: Platform.OS === 'web' ? 500 : 280,
     borderRadius: 12,
     marginBottom: 16,
   },
@@ -51,9 +55,14 @@ const styles = StyleSheet.create({
   linkButton: {
     backgroundColor: '#ffffffff',
     padding: 12,
+    width: Platform.OS === 'web' ? '60%' : '100%',
     borderRadius: 8,
     marginBottom: 24,
     alignItems: 'center',
+    alignSelf: 'center',
+  },
+  closeButton: {
+    backgroundColor: Platform.OS === 'web' ? '#000000ff' : '#000000ff',
   },
   linkText: {
     color: '#000000ff',

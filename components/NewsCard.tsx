@@ -1,5 +1,6 @@
 import { useNewsStore } from "@/store/newsStore";
-import { View, Text, StyleSheet, Image, Pressable, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable, TouchableOpacity, Platform } from "react-native";
+import { linear } from "react-native-reanimated";
 
 type NewsCardProps = {
     id: string;
@@ -49,8 +50,9 @@ const styles = StyleSheet.create({
     elevation: 2,
     flexDirection: 'column',
     alignItems: 'center',
-    width: '100%',
-    height: 500,
+    alignSelf: 'center',
+    width: Platform.OS === 'web' ? '50%' : '100%',
+    height: Platform.OS === 'web' ? 700 : 500,
     borderTopColor: '#ffffffff',
     borderTopWidth: 4,
   },
@@ -63,7 +65,8 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: "60%",
+    height: Platform.OS === 'web' ? '80%' : '60%',
+    borderRadius: Platform.OS === 'web' ? 12 : 0,
   },
   favoriteButton: {
     alignSelf: 'flex-end',

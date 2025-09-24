@@ -60,9 +60,10 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
   },
   image: {
-    width: '100%',
-    height: 100,
-    marginTop: 8,
+    width: Platform.OS === 'web' ? '25%' : '100%',
+    height: Platform.OS === 'web' ? 120 : 100,
     marginBottom: 8,
+    alignSelf: 'center',
+    justifyContent: 'flex-start',
   },
 });
