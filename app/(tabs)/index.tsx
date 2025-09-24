@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   headerContainer: {
-    paddingBottom: Platform.OS === 'web' ? 16 : 16,
+    paddingBottom: 8,
     paddingTop: Platform.OS === 'web' ? 0 : 8,
     backgroundColor: '#000000ff',
   }

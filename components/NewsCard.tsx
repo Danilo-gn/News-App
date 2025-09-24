@@ -55,6 +55,8 @@ const styles = StyleSheet.create({
     height: Platform.OS === 'web' ? 700 : 500,
     borderTopColor: '#ffffffff',
     borderTopWidth: 4,
+    paddingBottom: 24,
+    marginBottom: 16,
   },
   cardHeader: {
     flexDirection: 'row',

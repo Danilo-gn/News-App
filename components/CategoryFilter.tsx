@@ -44,6 +44,8 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 8,
     paddingHorizontal: 8,
+    paddingTop: 4,
+    alignSelf: 'center',
   },
   button: {
     paddingVertical: 8,
