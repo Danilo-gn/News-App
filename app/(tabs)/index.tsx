@@ -1,18 +1,20 @@
 import { Image } from 'expo-image';
 import { Platform, StyleSheet, ActivityIndicator, FlatList, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { useRouter } from 'expo-router';
 import { NewsCard } from '@/components/NewsCard';
-import { use, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNewsStore } from '@/store/newsStore';
 import { SearchBar } from '@/components/SearchBar';
 import { CategoryFilter } from '@/components/CategoryFilter';
+import { useNewsFetch } from '@/hooks/useNewFetch';
 
 export default function HomeScreen() {
   const router = useRouter();
-  const { newsList, setNewsList, loading, setLoading, search, setSearch, loadFavorites } = useNewsStore();
+  const { newsList, loading, search, setSearch, loadFavorites, error, isOffline } = useNewsStore();
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [category, setCategory] = useState('');
@@ -21,49 +23,25 @@ export default function HomeScreen() {
     loadFavorites();
   }, []);
 
-  const fetchNews = async (reset = false) => {
-    setLoading(true);
-    let url = '';
-    if (search) {
-      url = `https://newsapi.org/v2/everything?q=${search}&apiKey=c263e63109d243a5b55384ff52e4e3c7`;
-      if (category) url += `&category=${category}`;
-    } else {
-      url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=c263e63109d243a5b55384ff52e4e3c7`;
-      if (category) url += `&category=${category}`;
-    }
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-      const filtered = data.articles
-        .filter((item: any) => item.title && item.description && item.urlToImage)
-        .map((item: any, idx: number) => ({
-          id: `${item.url}-page${reset ? 1 : page}-idx${idx}`,
-          title: item.title,
-          description: item.description,
-          image: item.urlToImage ? { uri: item.urlToImage } : { uri: 'https://reactnative.dev/img/tiny_logo.png' },
-          content: item.content || item.description || 'No content available',
-          url: item.url,
-          source: item.source?.name || 'desconhecida',
-          publishedAt: item.publishedAt,
-        }));
-      if (reset) {
-        setNewsList(filtered);
-      } else {
-        setNewsList([...newsList, ...filtered]);
-      }
-      setHasMore(filtered.length > 0);
-    } catch {
-      setNewsList([]);
-      setHasMore(false);
-    } finally {
-      setLoading(false);
-    }
-  };
+  useNewsFetch({ search, category, page, setHasMore });
 
   useEffect(() => {
-    setPage(1);
-    fetchNews(true);
-  }, [search, category]);
+    if (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro',
+        text2: error,
+        position: 'top',
+      })
+    } else if (isOffline) {
+      Toast.show({
+        type: 'info',
+        text1: 'Offline',
+        text2: 'Você está offline. Por favor, verifique sua conexão com a internet.',
+        position: 'top',
+      })
+    }
+  }, [error, isOffline]);
 
   const loadMore = () => {
     if (!loading && hasMore) {
@@ -71,13 +49,8 @@ export default function HomeScreen() {
     }
   };
 
-  useEffect(() => {
-    if (page > 1) {
-      fetchNews();
-    }
-  }, [page]);
-
   return (
+    <>
     <FlatList
       style={{ 
         flex: 1, 
@@ -127,13 +100,17 @@ export default function HomeScreen() {
           />
           <CategoryFilter
             selected={category}
-            onSelect={cat => setCategory(cat)}
+            onSelect={cat => {
+              setCategory(cat);
+              setPage(1);
+            }}
           />
         </View>
       }
       ListFooterComponent={loading ? <ActivityIndicator size="large" style={{ margin: 24 }} /> : null}
       contentContainerStyle={{ paddingBottom: 24 }}
     />
+    </>
   );
 }
 

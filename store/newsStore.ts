@@ -23,6 +23,10 @@ type NewsStore = {
   addFavorite: (news: News) => void;
   removeFavorite: (id: string) => void;
   loadFavorites: () => Promise<void>;
+  error: string | null;
+  setError: (error: string | null) => void;
+  isOffline: boolean;
+  setIsOffline: (isOffline: boolean) => void;
 };
 
 export const useNewsStore = create<NewsStore>((set, get) => ({
@@ -50,4 +54,8 @@ export const useNewsStore = create<NewsStore>((set, get) => ({
     const stored = await AsyncStorage.getItem('favorites');
     if (stored) set({ favorites: JSON.parse(stored) });
   },
+  error: null,
+  setError: (error) => set({ error }),
+  isOffline: false,
+  setIsOffline: (offline) => set({ isOffline: offline }),
 }));

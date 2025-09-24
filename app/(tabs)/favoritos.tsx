@@ -6,9 +6,11 @@ import { ThemedView } from '@/components/themed-view';
 import { NewsCard } from '@/components/NewsCard';
 import { useNewsStore } from '@/store/newsStore';
 import { useEffect } from 'react';
+import { useRouter } from 'expo-router';
 
 export default function TabTwoScreen() {
   const { favorites, loadFavorites } = useNewsStore();
+  const router = useRouter();
 
   useEffect(() => {
     loadFavorites();
@@ -36,6 +38,18 @@ export default function TabTwoScreen() {
             date={item.publishedAt}
             content={item.content}
             url={item.url}
+            onPress={() => router.push({
+            pathname: '/news/[id]',
+            params: {
+              id: item.id,
+              title: item.title,
+              image: item.image.uri,
+              name: item.source,
+              date: item.publishedAt,
+              content: item.content,
+              url: item.url,
+            }
+          })}
           />
         )}
         ListEmptyComponent={
