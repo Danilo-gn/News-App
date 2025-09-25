@@ -11,6 +11,7 @@ import { useNewsStore } from '@/store/newsStore';
 import { SearchBar } from '@/components/SearchBar';
 import { CategoryFilter } from '@/components/CategoryFilter';
 import { useNewsFetch } from '@/hooks/useNewFetch';
+import { useToastOnErrorOrOffline } from '@/hooks/useToastOnErrorOrOffline';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -25,23 +26,7 @@ export default function HomeScreen() {
 
   useNewsFetch({ search, category, page, setHasMore });
 
-  useEffect(() => {
-    if (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Erro',
-        text2: error,
-        position: 'top',
-      })
-    } else if (isOffline) {
-      Toast.show({
-        type: 'info',
-        text1: 'Offline',
-        text2: 'Você está offline. Por favor, verifique sua conexão com a internet.',
-        position: 'top',
-      })
-    }
-  }, [error, isOffline]);
+  useToastOnErrorOrOffline(error, isOffline);
 
   const loadMore = () => {
     if (!loading && hasMore) {
