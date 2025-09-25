@@ -1,4 +1,4 @@
-import { View, TextInput, StyleSheet } from "react-native";
+import { TextInput, StyleSheet } from "react-native";
 import { ThemedView } from "./themed-view";
 import { useThemeStore } from "@/store/themeStore";
 
@@ -15,7 +15,7 @@ export function SearchBar({ value, onChange, onSubmit }: SearchBarProps) {
             <TextInput
                 style={[styles.input, {color: theme === 'dark' ? '#fff' : '#000'}]}
                 placeholder="Buscar notícias..."
-                placeholderTextColor={theme === 'dark' ? '#aaa' : '#1818187e'} // <-- aqui!
+                placeholderTextColor={theme === 'dark' ? '#aaa' : '#1818187e'}
                 value={value}
                 onChangeText={onChange}
                 onSubmitEditing={onSubmit}

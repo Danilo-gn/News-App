@@ -4,15 +4,10 @@ import Toast from 'react-native-toast-message';
 
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
-import { useTheme } from '@react-navigation/native';
 import { useThemeStore } from '@/store/themeStore';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
   const {theme} = useThemeStore();
-  const themeColors = Colors[colorScheme];
   
 
   return (

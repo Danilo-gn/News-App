@@ -4,7 +4,6 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 import { useThemeStore } from '@/store/themeStore';
 
-
 export const unstable_settings = {
   anchor: '(tabs)',
 };

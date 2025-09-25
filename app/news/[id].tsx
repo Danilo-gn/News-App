@@ -1,8 +1,7 @@
 import { ThemedText } from '@/components/themed-text';
 import { useThemeStore } from '@/store/themeStore';
-import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
-import { useEffect } from 'react';
-import { View, Text, StyleSheet, Button, ScrollView, Image, TouchableOpacity, Linking, Platform } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { StyleSheet, Button, ScrollView, Image, TouchableOpacity, Linking, Platform } from 'react-native';
 
 export default function NewsDetailScreen() {
   const { title, image, content, url } = useLocalSearchParams();

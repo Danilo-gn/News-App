@@ -1,5 +1,5 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet, ActivityIndicator, FlatList, View, Text, TouchableOpacity } from 'react-native';
+import { Platform, StyleSheet, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';

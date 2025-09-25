@@ -1,6 +1,5 @@
 import { useNewsStore } from "@/store/newsStore";
 import { View, Text, StyleSheet, Image, Pressable, TouchableOpacity, Platform } from "react-native";
-import { linear } from "react-native-reanimated";
 import { ThemedText } from "./themed-text";
 import { useThemeStore } from "@/store/themeStore";
 

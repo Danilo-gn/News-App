@@ -1,5 +1,5 @@
 import { useThemeStore } from "@/store/themeStore";
-import { ScrollView, TouchableOpacity, Text, StyleSheet, View } from "react-native";
+import { ScrollView, TouchableOpacity, Text, StyleSheet } from "react-native";
 
 const categories = [
     { key: '', label: 'Todas' },
