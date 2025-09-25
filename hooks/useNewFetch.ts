@@ -1,6 +1,8 @@
 import NetInfo from "@react-native-community/netinfo";
 import { useNewsStore } from "@/store/newsStore";
 import { useEffect } from "react";
+import { mockNews } from "@/mocks/mockNews";
+import { loadRecentNews, saveRecentNews } from "@/utils/recentNewsStorage";
 
 type UseNewsFetchProps = {
     search: string;
@@ -29,27 +31,47 @@ export function useNewsFetch({ search, category, page, setHasMore }: UseNewsFetc
 
           let url = '';
           if (search) {
-            url = `https://newsapi.org/v2/everything?q=${search}&apiKey=5f35e064f65644f9a22e4420cd672e46`;
+            url = `https://newsapi.org/v2/everything?q=${search}&apiKey=6402bd27916e461ab97ba73f2b691a10`;
             if (category) url += `&category=${category}`;
           } else {
-            url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=5f35e064f65644f9a22e4420cd672e46`;
+            url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=6402bd27916e461ab97ba73f2b691a10`;
             if (category) url += `&category=${category}`;
           }
           try {
             const res = await fetch(url);
+            const data = await res.json();
+            
             if (!res.ok) {
                 setError('Erro ao buscar notícias. Por favor, tente novamente mais tarde.');
                 setNewsList([]);
                 setHasMore(false);
                 return;
             }
-            const data = await res.json();
+
+            if (data.code === 'rateLimited' || data.message?.includes('rateLimited')) {
+              setError('Limite diário da API atingido. Exibindo notícias mockadas.');
+              const recent = await loadRecentNews();
+              if (recent.length > 0) {
+                setNewsList(recent);
+              } else {
+                setNewsList(mockNews);
+              }
+              setHasMore(false);
+              return;
+            }
+            
             if (data.status !== 'ok') {
                 setError('Erro na resposta da API. Por favor, tente novamente mais tarde.');
-                setNewsList([]);
+                const recent = await loadRecentNews();
+                if (recent.length > 0) {
+                  setNewsList(recent);
+                } else {
+                  setNewsList(mockNews);
+                }
                 setHasMore(false);
                 return;
             }
+
             const filtered = data.articles
               .filter((item: any) => item.title && item.description && item.urlToImage)
               .map((item: any, idx: number) => ({
@@ -62,11 +84,21 @@ export function useNewsFetch({ search, category, page, setHasMore }: UseNewsFetc
                 source: item.source?.name || 'desconhecida',
                 publishedAt: item.publishedAt,
               }));
-            setNewsList(page === 1 ? filtered : [...newsList, ...filtered]);
+            const newList = page === 1 ? filtered : [...newsList, ...filtered];
+            setNewsList(newList);
             setHasMore(filtered.length > 0);
+
+            if (page === 1 && filtered.length > 0) {
+              await saveRecentNews(filtered);
+            }
           } catch (e) {
             setError('Erro de conexão ou resposta inválida.');
-            setNewsList([]);
+            const recent = await loadRecentNews();
+            if (recent.length > 0) {
+              setNewsList(recent);
+            } else {
+              setNewsList(mockNews);
+            }
             setHasMore(false);
           } finally {
             setLoading(false);
