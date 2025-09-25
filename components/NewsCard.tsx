@@ -1,6 +1,8 @@
 import { useNewsStore } from "@/store/newsStore";
 import { View, Text, StyleSheet, Image, Pressable, TouchableOpacity, Platform } from "react-native";
 import { linear } from "react-native-reanimated";
+import { ThemedText } from "./themed-text";
+import { useThemeStore } from "@/store/themeStore";
 
 type NewsCardProps = {
     id: string;
@@ -17,14 +19,17 @@ type NewsCardProps = {
 export function NewsCard({ id, title, description, name, date, image, content, url, onPress }: NewsCardProps) {
   const {favorites, addFavorite, removeFavorite} = useNewsStore();
   const isFavorite = favorites.some(fav => fav.id === id);
+  const {theme} = useThemeStore();
   
   return (
     <Pressable onPress={onPress} style={({ pressed }) => [
         styles.card,
+        {backgroundColor: theme === 'dark' ? '#000000ff' : '#fff'},
+        {borderTopColor: theme === 'dark' ? '#ffffffff' : '#000000ff'},
         pressed && { opacity: 0.7 }
     ]}>
         <View style={styles.cardHeader}>
-          <Text style={styles.source}>{name} {date ? `• ${new Date(date).toLocaleDateString()}` : ''}</Text>
+          <ThemedText type="defaultSemiBold" style={{color: theme === 'dark' ? '#fff' : '#000'}}>{name} {date ? `• ${new Date(date).toLocaleDateString()}` : ''}</ThemedText>
           <TouchableOpacity
             style={styles.favoriteButton}
             onPress={() => isFavorite ? removeFavorite(id) : addFavorite({ id, title, description, image, content, url, source: name, publishedAt: date })}
@@ -36,8 +41,8 @@ export function NewsCard({ id, title, description, name, date, image, content, u
         </View>
         <Image source={image} style={styles.image} />
         <View style={styles.textContainer}>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.description}>{description}</Text>
+            <ThemedText style={[styles.title, {color: theme === 'dark' ? '#fff' : '#000'}]}>{title}</ThemedText>
+            <ThemedText style={styles.description}>{description}</ThemedText>
         </View>
     </Pressable>
   );
@@ -45,7 +50,6 @@ export function NewsCard({ id, title, description, name, date, image, content, u
 
 const styles = StyleSheet.create({
     card: {
-    backgroundColor: '#000000ff',
     overflow: 'hidden',
     elevation: 2,
     flexDirection: 'column',
@@ -53,9 +57,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: Platform.OS === 'web' ? '50%' : '100%',
     height: Platform.OS === 'web' ? 700 : 500,
-    borderTopColor: '#ffffffff',
     borderTopWidth: 4,
-    paddingBottom: 24,
     marginBottom: 16,
   },
   cardHeader: {
@@ -80,17 +82,7 @@ const styles = StyleSheet.create({
     padding: 8,
     flex: 1,
   },
-  source: {
-    color: '#ffffffff',
-    fontWeight: 'bold',
-    justifyContent: 'flex-start',
-    alignSelf: 'flex-start',
-    padding: 8,
-    fontSize: 15,
-    marginBottom: 2,
-  },
   title: {
-    color: '#fff',
     fontWeight: 'bold',
     fontSize: 18,
     marginBottom: 4,

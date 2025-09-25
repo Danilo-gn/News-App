@@ -7,23 +7,32 @@ import { NewsCard } from '@/components/NewsCard';
 import { useNewsStore } from '@/store/newsStore';
 import { useEffect } from 'react';
 import { useRouter } from 'expo-router';
+import { useThemeStore } from '@/store/themeStore';
 
 export default function TabTwoScreen() {
   const { favorites, loadFavorites } = useNewsStore();
   const router = useRouter();
+  const { theme } = useThemeStore();
+
+  let imagem = require('@/assets/images/jornal-light.png');
+  if (theme === 'dark') {
+    imagem = require('@/assets/images/jornal-dark.png');
+  } else {
+    imagem = require('@/assets/images/jornal-light.png');
+  }
 
   useEffect(() => {
     loadFavorites();
   }, []);
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#000' }}>
+    <ThemedView style={{ flex: 1, backgroundColor: theme === 'dark' ? '#000000ff' : '#ffffffff' }}>
       <Image
-        source={require('@/assets/images/jornal.png')}
+        source={imagem}
         style={styles.image}
       />
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Favoritos</ThemedText>
+      <ThemedView style={[styles.titleContainer, {backgroundColor: theme === 'dark' ? '#000000ff' : '#ffffffff'}]}>
+        <ThemedText type="title" style={{color: theme === 'dark' ? '#fff' : '#000'}}>Favoritos</ThemedText>
       </ThemedView>
       <FlatList
         data={favorites}
@@ -53,19 +62,18 @@ export default function TabTwoScreen() {
           />
         )}
         ListEmptyComponent={
-          <ThemedText style={{ color: '#fff', textAlign: 'center', marginTop: 40 }}>
+          <ThemedText style={{ color: theme === 'dark' ? '#fff' : '#000', textAlign: 'center', marginTop: 40 }}>
             Nenhuma notícia favoritada.
           </ThemedText>
         }
         contentContainerStyle={{ width: '100%' }}
       />
-    </View>
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
   titleContainer: {
-    backgroundColor: '#000000ff',
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,

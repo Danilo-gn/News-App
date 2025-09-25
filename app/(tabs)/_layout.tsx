@@ -6,34 +6,40 @@ import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useTheme } from '@react-navigation/native';
+import { useThemeStore } from '@/store/themeStore';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const {theme} = useThemeStore();
+  const themeColors = Colors[colorScheme];
+  
 
   return (
     <>
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Noticias',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="mail.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="favoritos"
-        options={{
-          title: 'Favoritos',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="star.fill" color={color} />,
-        }}
-      />
-    </Tabs>
-    <Toast />
+      <Tabs
+        screenOptions={{
+          tabBarActiveTintColor: theme === 'dark' ? '#ffffff' : '#000000',
+          tabBarInactiveTintColor: theme === 'dark' ? '#ffffff80' : '#00000080',
+          headerShown: false,
+          tabBarButton: HapticTab,
+        }}>
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: 'Noticias',
+            tabBarIcon: ({ color }) => <IconSymbol size={28} name="mail.fill" color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="favoritos"
+          options={{
+            title: 'Favoritos',
+            tabBarIcon: ({ color }) => <IconSymbol size={28} name="star.fill" color={color} />,
+          }}
+        />
+      </Tabs>
+      <Toast />
     </>
   );
 }

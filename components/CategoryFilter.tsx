@@ -1,3 +1,4 @@
+import { useThemeStore } from "@/store/themeStore";
 import { ScrollView, TouchableOpacity, Text, StyleSheet, View } from "react-native";
 
 const categories = [
@@ -17,6 +18,8 @@ type CategoryFilterProps = {
 }
 
 export function CategoryFilter({ selected, onSelect}: CategoryFilterProps) {
+    const {theme} = useThemeStore();
+
     return (
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.container}>
             {categories.map(cat => (
@@ -24,12 +27,14 @@ export function CategoryFilter({ selected, onSelect}: CategoryFilterProps) {
                     key={cat.key}
                     style={[
                         styles.button,
+                        {backgroundColor: theme === 'dark' ? '#222' : '#ddd'},
                         selected === cat.key && styles.selected,
                     ]}
                     onPress={() => onSelect(cat.key)}
                 >
                     <Text style={[
                         styles.text,
+                        {color: theme === 'dark' ? '#fff' : '#000'},
                         selected === cat.key && styles.selectedText,
                     ]}>
                         {cat.label}
@@ -51,14 +56,12 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 20,
-    backgroundColor: '#222',
     marginRight: 8,
   },
   selected: {
     backgroundColor: '#1976d2',
   },
   text: {
-    color: '#fff',
     fontSize: 15,
   },
   selectedText: {

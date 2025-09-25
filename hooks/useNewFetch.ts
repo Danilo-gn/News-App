@@ -31,10 +31,10 @@ export function useNewsFetch({ search, category, page, setHasMore }: UseNewsFetc
 
           let url = '';
           if (search) {
-            url = `https://newsapi.org/v2/everything?q=${search}&apiKey=6402bd27916e461ab97ba73f2b691a10`;
+            url = `https://newsapi.org/v2/everything?q=${search}&apiKey=5f35e064f65644f9a22e4420cd672e46`;
             if (category) url += `&category=${category}`;
           } else {
-            url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=6402bd27916e461ab97ba73f2b691a10`;
+            url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=5f35e064f65644f9a22e4420cd672e46`;
             if (category) url += `&category=${category}`;
           }
           try {
