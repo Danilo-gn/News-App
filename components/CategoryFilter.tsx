@@ -1,5 +1,6 @@
 import { useThemeStore } from "@/store/themeStore";
 import { ScrollView, TouchableOpacity, Text, StyleSheet } from "react-native";
+import { ThemedText } from "./themed-text";
 
 const categories = [
     { key: '', label: 'Todas' },
@@ -32,13 +33,12 @@ export function CategoryFilter({ selected, onSelect}: CategoryFilterProps) {
                     ]}
                     onPress={() => onSelect(cat.key)}
                 >
-                    <Text style={[
+                    <ThemedText style={[
                         styles.text,
-                        {color: theme === 'dark' ? '#fff' : '#000'},
                         selected === cat.key && styles.selectedText,
                     ]}>
                         {cat.label}
-                    </Text>
+                    </ThemedText>
                 </TouchableOpacity>
             ))}
         </ScrollView>

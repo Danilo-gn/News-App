@@ -1,5 +1,6 @@
-import { useThemeStore } from "@/store/themeStore";
-import { Modal, TouchableOpacity, View, Text, StyleSheet, Platform } from "react-native";
+import { Modal, TouchableOpacity, Text, StyleSheet, Platform } from "react-native";
+import { ThemedView } from "./themed-view";
+import { ThemedText } from "./themed-text";
 
 type ThemeOption = 'light' | 'dark' | 'custom';
 
@@ -11,9 +12,7 @@ type ThemeSideModalProps = {
 };
 
 export function ThemeSideModal({ visible, onClose, selected, onSelect }: ThemeSideModalProps) {
-    const {theme} = useThemeStore();
-
-    return (
+  return (
         <Modal
             visible={visible}
             animationType="fade"
@@ -21,21 +20,21 @@ export function ThemeSideModal({ visible, onClose, selected, onSelect }: ThemeSi
             onRequestClose={onClose}
         >
             <TouchableOpacity style={styles.overlay} activeOpacity={1} onPress={onClose}>
-                <View style={[styles.sideModal, {backgroundColor: theme === 'dark' ? '#333' : '#d3d3d3ff'}]} >
-                    <Text style={[styles.title, {color: theme === 'dark' ? '#fff' : '#000'}]}>Escolha o tema</Text>
+                <ThemedView style={styles.sideModal} >
+                    <ThemedText style={styles.title}>Escolha o tema</ThemedText>
                     <TouchableOpacity
                     style={[styles.option, selected === 'light' && styles.selected]}
                     onPress={() => onSelect('light')}
                     >
-                        <Text style={[styles.optionText, {color: theme === 'dark' ? '#fff' : '#000'}]}>Light</Text>
+                        <ThemedText style={styles.optionText}>Light</ThemedText>
                     </TouchableOpacity>
                     <TouchableOpacity
                     style={[styles.option, selected === 'dark' && styles.selected]}
                     onPress={() => onSelect('dark')}
                     >
-                        <Text style={[styles.optionText, {color: theme === 'dark' ? '#fff' : '#000'}]}>Dark</Text>
+                        <ThemedText style={styles.optionText}>Dark</ThemedText>
                     </TouchableOpacity>
-                </View>
+                </ThemedView>
             </TouchableOpacity>
         </Modal>
     )
@@ -59,7 +58,6 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   title: {
-    color: '#fff',
     fontWeight: 'bold',
     fontSize: 20,
     marginBottom: 24,
@@ -75,7 +73,6 @@ const styles = StyleSheet.create({
   },
   optionText: {
     paddingLeft: 8,
-    color: '#fff',
     fontSize: 16,
   },
 });

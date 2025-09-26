@@ -80,18 +80,18 @@ export default function HomeScreen() {
       onEndReached={loadMore}
       onEndReachedThreshold={0.5}
       ListHeaderComponent={
-        <ThemedView style={[styles.headerContainer, {backgroundColor: theme === 'dark' ? '#000000ff' : '#fff'}]}>
+        <ThemedView style={styles.headerContainer}>
           <Image
             source={imagem}
             style={styles.image}
           />
-          <ThemedView style={[styles.titleContainer, {backgroundColor: theme === 'dark' ? '#000' : '#fff'}]}>
-            <ThemedText type="title" style={{color: theme === 'dark' ? '#fff' : '#000'}}>News App</ThemedText>
+          <ThemedView style={styles.titleContainer}>
+            <ThemedText type="title">News App</ThemedText>
             <TouchableOpacity
               style={[styles.themeButton, {backgroundColor: theme === 'dark' ? '#222' : '#ddd'}]}
               onPress={() => setThemeModalVisible(true)}
             >
-              <ThemedText type="default" style={{color: theme === 'dark' ? '#fff' : '#000'}}>Temas</ThemedText>
+              <ThemedText type="default">Temas</ThemedText>
             </TouchableOpacity>
           </ThemedView>
           <SearchBar

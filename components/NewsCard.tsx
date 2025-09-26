@@ -28,7 +28,7 @@ export function NewsCard({ id, title, description, name, date, image, content, u
         pressed && { opacity: 0.7 }
     ]}>
         <View style={styles.cardHeader}>
-          <ThemedText type="defaultSemiBold" style={{color: theme === 'dark' ? '#fff' : '#000'}}>{name} {date ? `• ${new Date(date).toLocaleDateString()}` : ''}</ThemedText>
+          <ThemedText type="defaultSemiBold">{name} {date ? `• ${new Date(date).toLocaleDateString()}` : ''}</ThemedText>
           <TouchableOpacity
             style={styles.favoriteButton}
             onPress={() => isFavorite ? removeFavorite(id) : addFavorite({ id, title, description, image, content, url, source: name, publishedAt: date })}
@@ -40,7 +40,7 @@ export function NewsCard({ id, title, description, name, date, image, content, u
         </View>
         <Image source={image} style={styles.image} />
         <View style={styles.textContainer}>
-            <ThemedText style={[styles.title, {color: theme === 'dark' ? '#fff' : '#000'}]}>{title}</ThemedText>
+            <ThemedText style={styles.title}>{title}</ThemedText>
             <ThemedText style={styles.description}>{description}</ThemedText>
         </View>
     </Pressable>

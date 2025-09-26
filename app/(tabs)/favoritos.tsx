@@ -26,13 +26,13 @@ export default function TabTwoScreen() {
   }, []);
 
   return (
-    <ThemedView style={{ flex: 1, backgroundColor: theme === 'dark' ? '#000000ff' : '#ffffffff' }}>
+    <ThemedView style={{ flex: 1 }}>
       <Image
         source={imagem}
         style={styles.image}
       />
-      <ThemedView style={[styles.titleContainer, {backgroundColor: theme === 'dark' ? '#000000ff' : '#ffffffff'}]}>
-        <ThemedText type="title" style={{color: theme === 'dark' ? '#fff' : '#000'}}>Favoritos</ThemedText>
+      <ThemedView style={styles.titleContainer}>
+        <ThemedText type="title">Favoritos</ThemedText>
       </ThemedView>
       <FlatList
         data={favorites}
@@ -62,7 +62,7 @@ export default function TabTwoScreen() {
           />
         )}
         ListEmptyComponent={
-          <ThemedText style={{ color: theme === 'dark' ? '#fff' : '#000', textAlign: 'center', marginTop: 40 }}>
+          <ThemedText style={{ textAlign: 'center', marginTop: 40 }}>
             Nenhuma notícia favoritada.
           </ThemedText>
         }

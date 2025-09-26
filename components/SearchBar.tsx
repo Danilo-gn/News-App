@@ -11,7 +11,7 @@ type SearchBarProps = {
 export function SearchBar({ value, onChange, onSubmit }: SearchBarProps) {
     const {theme} = useThemeStore();
     return (
-        <ThemedView style={[styles.container, {backgroundColor: theme === 'dark' ? '#22222288' : '#d6d6d6ff'}]}>
+        <ThemedView style={styles.container}>
             <TextInput
                 style={[styles.input, {color: theme === 'dark' ? '#fff' : '#000'}]}
                 placeholder="Buscar notícias..."
