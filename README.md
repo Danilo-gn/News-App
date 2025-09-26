@@ -31,3 +31,8 @@ Para este projeto, foram escolhidas as seguintes tecnologias: React/React-Native
 - Zustand: Uma biblioteca de gerenciamento de estado leve e simples de implementar. Foi escolhida por sua baixa curva de aprendizado, desempenho superior em relação a alternativas mais complexas (como Redux) e facilidade em organizar os dados do app, como notícias salvas, preferências do usuário e status de carregamento.
 - Fetch API: Ferramenta nativa do JavaScript para realizar requisições HTTP. No contexto do app, ela é usada para consumir APIs de notícias em tempo real, sem a necessidade de bibliotecas externas, tornando o projeto mais enxuto e direto.
 - Expo CLI: Facilita a configuração e o desenvolvimento do app, eliminando a complexidade inicial do React Native puro. O Expo oferece ferramentas prontas para build, acesso simplificado a APIs nativas (como câmera e notificações) e um fluxo de testes ágil por meio do aplicativo Expo Go, ideal para desenvolvimento rápido e prototipagem.
+  
+## Vídeos demonstrativos do App
+
+- [Versão web](https://youtu.be/xuzrEVj01ec)
+- [Versão mobile](https://youtube.com/shorts/Y92ps398coY?feature=share)
