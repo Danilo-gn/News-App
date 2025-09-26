@@ -1,4 +1,4 @@
-import { Modal, TouchableOpacity, Text, StyleSheet, Platform } from "react-native";
+import { Modal, TouchableOpacity, StyleSheet, Platform } from "react-native";
 import { ThemedView } from "./themed-view";
 import { ThemedText } from "./themed-text";
 

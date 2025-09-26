@@ -5,7 +5,7 @@ import Toast from 'react-native-toast-message';
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useThemeStore } from '@/store/themeStore';
-import { Platform, useWindowDimensions } from 'react-native';
+import { useWindowDimensions } from 'react-native';
 
 export default function TabLayout() {
   const { width } = useWindowDimensions();
