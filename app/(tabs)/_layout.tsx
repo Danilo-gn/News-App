@@ -5,16 +5,18 @@ import Toast from 'react-native-toast-message';
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useThemeStore } from '@/store/themeStore';
+import { Platform, useWindowDimensions } from 'react-native';
 
 export default function TabLayout() {
+  const { width } = useWindowDimensions();
   const {theme} = useThemeStore();
-  
+  const horizontalPadding = width > 1024 ? 240 : width > 768 ? 120 : 16;  
 
   return (
     <>
       <Tabs
         screenOptions={{
-          tabBarStyle: { width: '100%', alignSelf: 'center', paddingHorizontal: 240 },
+          tabBarStyle: { borderTopStartRadius: 8, borderTopEndRadius: 8, paddingHorizontal: horizontalPadding },
           tabBarActiveTintColor: theme === 'dark' ? '#ffffff' : '#000000',
           tabBarInactiveTintColor: theme === 'dark' ? '#ffffff80' : '#00000080',
           headerShown: false,

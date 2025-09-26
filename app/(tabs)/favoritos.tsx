@@ -1,5 +1,4 @@
-import { Image } from 'expo-image';
-import { Animated, FlatList, Platform, StyleSheet } from 'react-native';
+import { Animated, Platform, StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -81,8 +80,10 @@ export default function TabTwoScreen() {
 
 const styles = StyleSheet.create({
   titleContainer: {
+    width: Platform.OS === 'web' ? '50%' : '100%',
     flexDirection: 'row',
     alignItems: 'center',
+    alignSelf: 'center',
     gap: 8,
     paddingBottom: 16,
     paddingTop: 16,

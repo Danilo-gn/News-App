@@ -1,11 +1,10 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet, ActivityIndicator, FlatList, TouchableOpacity, Animated, RefreshControl } from 'react-native';
+import { Platform, StyleSheet, ActivityIndicator, TouchableOpacity, Animated, RefreshControl } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { useRouter } from 'expo-router';
 import { NewsCard } from '@/components/NewsCard';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNewsStore } from '@/store/newsStore';
 import { SearchBar } from '@/components/SearchBar';
 import { CategoryFilter } from '@/components/CategoryFilter';
@@ -138,8 +137,10 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   titleContainer: {
+    width: Platform.OS === 'web' ? '50%' : '100%',
     flexDirection: 'row',
     alignItems: 'center',
+    alignSelf: 'center',
     gap: 8,
     paddingBottom: 16,
     paddingTop: 16,

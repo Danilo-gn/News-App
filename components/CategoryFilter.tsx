@@ -1,5 +1,5 @@
 import { useThemeStore } from "@/store/themeStore";
-import { ScrollView, TouchableOpacity, Text, StyleSheet } from "react-native";
+import { ScrollView, TouchableOpacity, Text, StyleSheet, Platform } from "react-native";
 import { ThemedText } from "./themed-text";
 
 const categories = [
@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingTop: 4,
     alignSelf: 'center',
+    width: Platform.OS === 'web' ? '50%' : '100%',
   },
   button: {
     paddingVertical: 8,

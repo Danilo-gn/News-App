@@ -1,4 +1,4 @@
-import { TextInput, StyleSheet } from "react-native";
+import { TextInput, StyleSheet, Platform } from "react-native";
 import { ThemedView } from "./themed-view";
 import { useThemeStore } from "@/store/themeStore";
 
@@ -28,7 +28,9 @@ export function SearchBar({ value, onChange, onSubmit }: SearchBarProps) {
 const styles = StyleSheet.create({
   container: {
     filter: 'invert(12%)',
-    width: '100%',
+    width: Platform.OS === 'web' ? '50%' : '100%',
+    alignSelf: 'center',
+    borderRadius: Platform.OS === 'web' ? 12 : 0,
   },
   input: {
     padding: 12,
