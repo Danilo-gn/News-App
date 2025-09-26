@@ -1,5 +1,5 @@
 import { Image } from 'expo-image';
-import { FlatList, Platform, StyleSheet } from 'react-native';
+import { Animated, FlatList, Platform, StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -8,11 +8,13 @@ import { useNewsStore } from '@/store/newsStore';
 import { useEffect } from 'react';
 import { useRouter } from 'expo-router';
 import { useThemeStore } from '@/store/themeStore';
+import { useImageScale } from '@/hooks/useImageScale';
 
 export default function TabTwoScreen() {
   const { favorites, loadFavorites } = useNewsStore();
   const router = useRouter();
   const { theme } = useThemeStore();
+  const { scrollY, imageScale } = useImageScale();
 
   let imagem = theme === 'dark'
       ? require('@/assets/images/jornal-dark.png')
@@ -24,14 +26,7 @@ export default function TabTwoScreen() {
 
   return (
     <ThemedView style={{ flex: 1 }}>
-      <Image
-        source={imagem}
-        style={styles.image}
-      />
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Favoritos</ThemedText>
-      </ThemedView>
-      <FlatList
+      <Animated.FlatList
         data={favorites}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
@@ -58,6 +53,21 @@ export default function TabTwoScreen() {
           })}
           />
         )}
+        onScroll={Animated.event(
+                [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                { useNativeDriver: true }
+              )}
+        ListHeaderComponent={
+          <ThemedView style={styles.headerContainer}>
+            <Animated.Image
+              source={imagem}
+              style={[styles.image, { transform: [{ scale: imageScale }] }]}
+            />
+            <ThemedView style={styles.titleContainer}>
+              <ThemedText type="title">Favoritos</ThemedText>
+            </ThemedView>
+          </ThemedView>
+        }
         ListEmptyComponent={
           <ThemedText style={{ textAlign: 'center', marginTop: 40 }}>
             Nenhuma notícia favoritada.
@@ -84,5 +94,9 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     alignSelf: 'center',
     justifyContent: 'flex-start',
+  },
+  headerContainer: {
+    paddingBottom: 8,
+    paddingTop: Platform.OS === 'web' ? 0 : 8,
   },
 });

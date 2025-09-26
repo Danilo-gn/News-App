@@ -40,16 +40,9 @@ export function useNewsFetch({ search, category, page, setHasMore }: UseNewsFetc
           try {
             const res = await fetch(url);
             const data = await res.json();
-            
-            if (!res.ok) {
-                setError('Erro ao buscar notícias. Por favor, tente novamente mais tarde.');
-                setNewsList([]);
-                setHasMore(false);
-                return;
-            }
 
             if (data.code === 'rateLimited' || data.message?.includes('rateLimited')) {
-              setError('Limite diário da API atingido. Exibindo notícias mockadas.');
+              setError('Limite diário da API atingido. Exibindo notícias "mockadas".');
               const recent = await loadRecentNews();
               if (recent.length > 0) {
                 setNewsList(recent);

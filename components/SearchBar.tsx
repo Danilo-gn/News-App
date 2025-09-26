@@ -27,9 +27,8 @@ export function SearchBar({ value, onChange, onSubmit }: SearchBarProps) {
 
 const styles = StyleSheet.create({
   container: {
+    filter: 'invert(12%)',
     width: '100%',
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
   },
   input: {
     padding: 12,

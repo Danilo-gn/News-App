@@ -14,6 +14,7 @@ export default function TabLayout() {
     <>
       <Tabs
         screenOptions={{
+          tabBarStyle: { width: '100%', alignSelf: 'center', paddingHorizontal: 240 },
           tabBarActiveTintColor: theme === 'dark' ? '#ffffff' : '#000000',
           tabBarInactiveTintColor: theme === 'dark' ? '#ffffff80' : '#00000080',
           headerShown: false,

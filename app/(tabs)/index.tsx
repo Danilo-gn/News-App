@@ -1,11 +1,11 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
+import { Platform, StyleSheet, ActivityIndicator, FlatList, TouchableOpacity, Animated, RefreshControl } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { useRouter } from 'expo-router';
 import { NewsCard } from '@/components/NewsCard';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNewsStore } from '@/store/newsStore';
 import { SearchBar } from '@/components/SearchBar';
 import { CategoryFilter } from '@/components/CategoryFilter';
@@ -15,6 +15,7 @@ import { ThemeSideModal } from '@/components/ThemeSideModal';
 import { useThemeStore } from '@/store/themeStore';
 import { usePaginationStore } from '@/store/paginationStore';
 import { useUiStore } from '@/store/uiStore';
+import { useImageScale } from '@/hooks/useImageScale';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -22,6 +23,8 @@ export default function HomeScreen() {
   const { page, hasMore, nextPage, setHasMore, reset } = usePaginationStore();
   const { themeModalVisible, setThemeModalVisible } = useUiStore();
   const { theme, setTheme } = useThemeStore();
+  const { scrollY, imageScale } = useImageScale();
+  const [refreshing, setRefreshing] = useState(false);
 
   let imagem = theme === 'dark'
     ? require('@/assets/images/jornal-dark.png')
@@ -38,9 +41,17 @@ export default function HomeScreen() {
     if (!loading && hasMore) nextPage();
   };
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    reset();
+    await loadFavorites();
+    setRefreshing(false);
+  };
+
+
   return (
     <>
-    <FlatList
+    <Animated.FlatList
       style={{ 
         flex: 1, 
         backgroundColor: theme === 'dark' ? '#000000ff' : '#ffffffff',
@@ -73,11 +84,18 @@ export default function HomeScreen() {
       )}
       onEndReached={loadMore}
       onEndReachedThreshold={0.5}
+      onScroll={Animated.event(
+        [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+        { useNativeDriver: true }
+      )}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
       ListHeaderComponent={
         <ThemedView style={styles.headerContainer}>
-          <Image
+          <Animated.Image
             source={imagem}
-            style={styles.image}
+            style={[styles.image, { transform: [{ scale: imageScale }] }]}
           />
           <ThemedView style={styles.titleContainer}>
             <ThemedText type="title">News App</ThemedText>
@@ -128,6 +146,7 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
   },
   image: {
+    flex: 1,
     width: Platform.OS === 'web' ? '25%' : '100%',
     height: Platform.OS === 'web' ? 120 : 100,
     marginBottom: 8,
