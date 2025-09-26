@@ -18,7 +18,7 @@ export function ThemedText({
 
   const color =
     theme === 'dark'
-      ? darkColor ?? '#fff'
+      ? darkColor ?? '#ffffffff'
       : lightColor ?? '#000';
 
   return (

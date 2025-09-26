@@ -4,12 +4,13 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StyleSheet, Button, ScrollView, Image, TouchableOpacity, Linking, Platform } from 'react-native';
 
 export default function NewsDetailScreen() {
-  const { title, image, content, url } = useLocalSearchParams();
+  const { title, image, content, url, name, date } = useLocalSearchParams();
   const router = useRouter();
   const {theme} = useThemeStore();
 
   return (
     <ScrollView contentContainerStyle={[styles.container, {backgroundColor: theme === 'dark' ? '#000000ff' : '#ffffffff'}]}>
+      <ThemedText type="defaultSemiBold">{name} {date ? `• ${new Date(date.toString()).toLocaleDateString()}` : ''}</ThemedText>
       {image ? (
         <Image source={{ uri: image as string }} style={styles.image} />
       ) : null}

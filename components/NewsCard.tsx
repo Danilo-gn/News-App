@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, Pressable, TouchableOpacity, Platform } 
 import { ThemedText } from "./themed-text";
 import { useThemeStore } from "@/store/themeStore";
 
-type NewsCardProps = {
+export type NewsCardProps = {
     id: string;
     title: string;
     description: string;
