@@ -13,11 +13,11 @@ export default function NewsDetailScreen() {
       {image ? (
         <Image source={{ uri: image as string }} style={styles.image} />
       ) : null}
-      <ThemedText style={[styles.title, {color: theme === 'dark' ? '#fff' : '#000'}]}>{title}</ThemedText>
-      <ThemedText style={[styles.content, {color: theme === 'dark' ? '#fff' : '#000'}]}>{content}</ThemedText>
+      <ThemedText style={styles.title}>{title}</ThemedText>
+      <ThemedText style={styles.content}>{content}</ThemedText>
       {url ? (
         <TouchableOpacity onPress={() => Linking.openURL(url as string)} style={[styles.linkButton, {backgroundColor: theme === 'dark' ? '#ffffffff' : '#0c0c0cff'}]}>
-          <ThemedText style={[styles.linkText, {color: theme === 'dark' ? '#000' : '#fff'}]}>Acessar matéria original</ThemedText>
+          <ThemedText type="link">Acessar matéria original</ThemedText>
         </TouchableOpacity>
       ) : null}
       <TouchableOpacity style={[styles.closeButton, {backgroundColor: theme === 'dark' ? '#000' : '#fff'}]}>
@@ -67,9 +67,5 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     alignItems: 'center',
     alignSelf: 'center',
-  },
-  linkText: {
-    fontWeight: 'bold',
-    fontSize: 16,
   },
 });
