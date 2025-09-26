@@ -5,7 +5,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { useRouter } from 'expo-router';
 import { NewsCard } from '@/components/NewsCard';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNewsStore } from '@/store/newsStore';
 import { SearchBar } from '@/components/SearchBar';
 import { CategoryFilter } from '@/components/CategoryFilter';
@@ -13,35 +13,29 @@ import { useNewsFetch } from '@/hooks/useNewFetch';
 import { useToastOnErrorOrOffline } from '@/hooks/useToastOnErrorOrOffline';
 import { ThemeSideModal } from '@/components/ThemeSideModal';
 import { useThemeStore } from '@/store/themeStore';
+import { usePaginationStore } from '@/store/paginationStore';
+import { useUiStore } from '@/store/uiStore';
 
 export default function HomeScreen() {
   const router = useRouter();
-  const { newsList, loading, search, setSearch, loadFavorites, error, isOffline } = useNewsStore();
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [category, setCategory] = useState('');
-  const [themeModalVisible, setThemeModalVisible] = useState(false);
+  const { newsList, loading, search, setSearch, loadFavorites, error, isOffline, category, setCategory } = useNewsStore();
+  const { page, hasMore, nextPage, setHasMore, reset } = usePaginationStore();
+  const { themeModalVisible, setThemeModalVisible } = useUiStore();
   const { theme, setTheme } = useThemeStore();
 
-  let imagem = require('@/assets/images/jornal-light.png');
-  if (theme === 'dark') {
-    imagem = require('@/assets/images/jornal-dark.png');
-  } else {
-    imagem = require('@/assets/images/jornal-light.png');
-  }
+  let imagem = theme === 'dark'
+    ? require('@/assets/images/jornal-dark.png')
+    : require('@/assets/images/jornal-light.png');
 
   useEffect(() => {
     loadFavorites();
   }, []);
 
   useNewsFetch({ search, category, page, setHasMore });
-
   useToastOnErrorOrOffline(error, isOffline);
 
   const loadMore = () => {
-    if (!loading && hasMore) {
-      setPage(prev => prev + 1);
-    }
+    if (!loading && hasMore) nextPage();
   };
 
   return (
@@ -103,7 +97,7 @@ export default function HomeScreen() {
             selected={category}
             onSelect={cat => {
               setCategory(cat);
-              setPage(1);
+              reset();
             }}
           />
         </ThemedView>

@@ -27,6 +27,8 @@ type NewsStore = {
   setError: (error: string | null) => void;
   isOffline: boolean;
   setIsOffline: (isOffline: boolean) => void;
+  category: string;
+  setCategory: (category: string) => void;
 };
 
 export const useNewsStore = create<NewsStore>((set, get) => ({
@@ -58,4 +60,6 @@ export const useNewsStore = create<NewsStore>((set, get) => ({
   setError: (error) => set({ error }),
   isOffline: false,
   setIsOffline: (offline) => set({ isOffline: offline }),
+  category: '',
+  setCategory: (category) => set({ category }),
 }));

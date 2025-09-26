@@ -14,12 +14,9 @@ export default function TabTwoScreen() {
   const router = useRouter();
   const { theme } = useThemeStore();
 
-  let imagem = require('@/assets/images/jornal-light.png');
-  if (theme === 'dark') {
-    imagem = require('@/assets/images/jornal-dark.png');
-  } else {
-    imagem = require('@/assets/images/jornal-light.png');
-  }
+  let imagem = theme === 'dark'
+      ? require('@/assets/images/jornal-dark.png')
+      : require('@/assets/images/jornal-light.png');
 
   useEffect(() => {
     loadFavorites();
